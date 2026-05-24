@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>LeadFlow CRM | Secure Login</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container": "#201f22",
+            "on-secondary-fixed-variant": "#005236",
+            "inverse-primary": "#005ac2",
+            "surface": "#131315",
+            "primary": "#adc6ff",
+            "on-tertiary": "#502400",
+            "on-primary-container": "#00285d",
+            "surface-container-lowest": "#0e0e10",
+            "tertiary": "#ffb786",
+            "tertiary-fixed-dim": "#ffb786",
+            "surface-variant": "#353437",
+            "primary-fixed": "#d8e2ff",
+            "on-error-container": "#ffdad6",
+            "error": "#ffb4ab",
+            "surface-card": "#121214",
+            "surface-container-highest": "#353437",
+            "surface-bright": "#39393b",
+            "primary-container": "#4d8eff",
+            "brand-purple": "#8B5CF6",
+            "on-secondary-container": "#00311f",
+            "secondary-container": "#00a572",
+            "tertiary-fixed": "#ffdcc6",
+            "error-container": "#93000a",
+            "surface-accent": "#1c1c1f",
+            "text-secondary": "#a1a1aa",
+            "tertiary-container": "#df7412",
+            "on-secondary": "#003824",
+            "text-primary": "#f4f4f5",
+            "secondary": "#4edea3",
+            "surface-container-low": "#1c1b1d",
+            "secondary-fixed-dim": "#4edea3",
+            "inverse-surface": "#e5e1e4",
+            "on-surface": "#e5e1e4",
+            "outline": "#8c909f",
+            "background": "#131315",
+            "surface-dim": "#131315",
+            "on-background": "#e5e1e4",
+            "on-tertiary-fixed": "#311400",
+            "inverse-on-surface": "#313032",
+            "primary-fixed-dim": "#adc6ff",
+            "border-subtle": "rgba(255, 255, 255, 0.08)",
+            "on-error": "#690005",
+            "on-primary-fixed-variant": "#004395",
+            "surface-container-high": "#2a2a2c",
+            "on-tertiary-fixed-variant": "#723600",
+            "on-primary": "#002e6a",
+            "surface-background": "#09090b",
+            "on-surface-variant": "#c2c6d6",
+            "on-primary-fixed": "#001a42",
+            "surface-tint": "#adc6ff",
+            "brand-lime": "#E4F222",
+            "outline-variant": "#424754",
+            "on-tertiary-container": "#461f00",
+            "on-secondary-fixed": "#002113",
+            "secondary-fixed": "#6ffbbe"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "24px",
+            "container-max": "1440px",
+            "card-padding": "20px",
+            "sidebar-width": "240px",
+            "base": "4px"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "headline-xl": ["Inter"],
+            "label-mono": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes breathing-pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px 0px rgba(77, 142, 255, 0.3);
+      }
+
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 40px 10px rgba(77, 142, 255, 0.5);
+      }
+    }
+
+    @keyframes slide-up-fade {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float-particle {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 0.4;
+      }
+
+      90% {
+        opacity: 0.4;
+      }
+
+      100% {
+        transform: translateY(-100vh) translateX(20px);
+        opacity: 0;
+      }
+    }
+
+    .animate-breathing-pulse {
+      animation: breathing-pulse 4s ease-in-out infinite;
+    }
+
+    .staggered-entry>* {
+      opacity: 0;
+      animation: slide-up-fade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .particle {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .animate-breathing-pulse,
+      .staggered-entry>*,
+      .particle {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+  <script type="module">
+    import { initializeApp } from
+      'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'
+    import {
+      getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail,
+      signInWithPopup, GoogleAuthProvider, onAuthStateChanged
+    }
+      from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js'
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAHnSdG-op7FlTaFmeDjvZ-BpM1daWeXc4",
+      authDomain: "crm-internship-8a6a8.firebaseapp.com",
+      projectId: "crm-internship-8a6a8",
+      storageBucket: "crm-internship-8a6a8.firebasestorage.app",
+      messagingSenderId: "425345333973",
+      appId: "1:425345333973:web:9313658c44f0968e9e005c"
+    }
+
+    const app = initializeApp(firebaseConfig)
+    const auth = getAuth(app)
+
+    // Redirect if already logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = '/'
+    })
+
+    // Google Sign In
+    document.getElementById('google-btn').addEventListener('click', async () => {
+      try {
+        await signInWithPopup(auth, new GoogleAuthProvider())
+        window.location.href = '/'
+      } catch (err) {
+        showError('Google sign in failed. Please try again.')
+      }
+    })
+
+    // Email Sign In
+    document.querySelector('form').addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const email = document.getElementById('email').value.trim()
+      const password = document.getElementById('password').value
+      try {
+        await signInWithEmailAndPassword(auth, email, password)
+        window.location.href = '/'
+      } catch (err) {
+        console.error('Login Error:', err)
+        if (err.code === 'auth/invalid-credential') {
+          showError('User not found or wrong password.')
+          let signupBtn = document.getElementById('signup-btn-fallback')
+          if (!signupBtn) {
+            signupBtn = document.createElement('button')
+            signupBtn.id = 'signup-btn-fallback'
+            signupBtn.textContent = 'Create new account instead'
+            signupBtn.className = 'mt-3 w-full border border-blue-500 text-blue-500 hover:bg-blue-500/10 py-2 rounded-lg text-sm font-medium transition-colors'
+            signupBtn.type = 'button'
+            signupBtn.onclick = async () => {
+              try {
+                await createUserWithEmailAndPassword(auth, document.getElementById('email').value.trim(), document.getElementById('password').value)
+                window.location.href = '/'
+              } catch (e) {
+                showError(e.message)
+              }
+            }
+            document.querySelector('form').appendChild(signupBtn)
+          }
+        } else {
+          showError(err.message || 'Invalid email or password.')
+        }
+      }
+    })
+
+    function showError(msg) {
+      let el = document.getElementById('error-msg')
+      if (!el) {
+        el = document.createElement('p')
+        el.id = 'error-msg'
+        el.style.cssText =
+          'color:#ef4444;font-size:13px;text-align:center;margin-top:8px;'
+        document.querySelector('form').appendChild(el)
+      }
+      el.textContent = msg
+    }
+
+    window.switchView = function (view) {
+      document.getElementById('view-login').style.display =
+        view === 'login' ? 'flex' : 'none'
+      document.getElementById('view-forgot').style.display =
+        view === 'forgot' ? 'flex' : 'none'
+      document.getElementById('view-sent').style.display =
+        view === 'sent' ? 'flex' : 'none'
+    }
+
+    window.handlePasswordReset = async () => {
+      const email = document.getElementById('reset-email').value.trim()
+      const errorEl = document.getElementById('reset-error')
+      const btn = document.getElementById('reset-btn')
+
+      if (!email) {
+        errorEl.textContent = 'Please enter your email address.'
+        errorEl.style.display = 'block'
+        return
+      }
+
+      try {
+        btn.textContent = 'Sending...'
+        btn.disabled = true
+        const actionCodeSettings = {
+          url: window.location.origin + '/login.html',
+          handleCodeInApp: false
+        }
+
+        await sendPasswordResetEmail(auth, email, actionCodeSettings)
+        document.getElementById('sent-email-display').textContent = email
+        window.switchView('sent')
+      } catch (err) {
+        errorEl.textContent = 'No account found with this email address.'
+        errorEl.style.display = 'block'
+        btn.innerHTML = 'Send Reset Link <span class="material-symbols-outlined" style="font-size:20px;">arrow_right_alt</span>'
+        btn.disabled = false
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-surface-background text-text-primary font-body-md selection:bg-primary-container/30 overflow-hidden">
+  <main class="flex h-screen w-full">
+    <!-- Left Panel (60%) -->
+    <section
+      class="left-panel hidden md:flex md:w-3/5 bg-[#0d1117] relative flex-col justify-between p-gutter overflow-hidden border-r border-border-subtle">
+      <!-- Background Particles Container -->
+      <div class="absolute inset-0 z-0 pointer-events-none" id="particle-container"></div>
+      <!-- Top Header -->
+      <div class="z-10 flex items-start">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20">
+          <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span><span
+            class="font-label-mono text-label-mono text-secondary uppercase tracking-widest">● LeadFlow Active</span>
+        </div>
+      </div>
+      <!-- Central Visual -->
+      <div class="z-10 flex flex-col items-center justify-center flex-grow gap-12">
+        <div class="relative">
+          <div
+            class="w-32 h-32 bg-primary-container/20 rounded-2xl flex items-center justify-center animate-breathing-pulse border border-primary/30">
+            <span class="material-symbols-outlined text-primary text-6xl"
+              style="font-variation-settings: 'FILL' 1;">filter_alt</span>
+          </div>
+          <!-- Orbiting dots visual -->
+          <div class="absolute -inset-8 border border-white/5 rounded-full animate-[spin_10s_linear_infinite]"></div>
+          <div class="absolute -inset-16 border border-white/5 rounded-full animate-[spin_15s_linear_infinite_reverse]">
+          </div>
+        </div>
+        <div class="flex flex-col gap-4 w-full max-w-lg">
+          <div
+            class="glass-card p-4 rounded-xl flex items-center gap-4 transition-transform hover:scale-[1.02] cursor-default">
+            <span class="material-symbols-outlined text-secondary">group</span>
+            <p class="font-body-md text-text-primary whitespace-nowrap">Track every lead from contact to conversion</p>
+          </div>
+          <div
+            class="glass-card p-4 rounded-xl flex items-center gap-4 transition-transform hover:scale-[1.02] cursor-default">
+            <span class="material-symbols-outlined text-primary">bar_chart</span>
+            <p class="font-body-md text-text-primary whitespace-nowrap">Visual analytics — pie, bar and timeline charts</p>
+          </div>
+          <div
+            class="glass-card p-4 rounded-xl flex items-center gap-4 transition-transform hover:scale-[1.02] cursor-default">
+            <span class="material-symbols-outlined text-tertiary">notifications_active</span>
+            <p class="font-body-md text-text-primary whitespace-nowrap">Smart follow-up reminders, no lead missed</p>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom Tagline -->
+      <div class="z-10">
+        <p class="font-headline-lg text-headline-lg text-white max-w-xs">Turn conversations into customers.</p>
+        <p class="font-body-md text-text-secondary mt-2 max-w-md">LeadFlow CRM helps teams manage pipelines, nurture relationships, and close deals faster — all in one place.</p>
+      </div>
+    </section>
+    <!-- Right Panel (40%) -->
+    <section
+      class="w-full md:w-2/5 bg-[#09090b] flex flex-col items-center justify-center px-8 md:px-16 py-12 relative overflow-y-auto staggered-entry">
+      <div class="w-full max-w-md flex flex-col gap-8" style="animation-delay: 0.1s">
+        <!-- Brand Header -->
+        <header class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-primary flex items-center justify-center rounded-lg">
+            <span class="material-symbols-outlined text-on-primary font-bold">bolt</span>
+          </div>
+          <h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight">LeadFlow CRM</h1>
+        </header>
+        <!-- Welcome Text -->
+        <div class="flex flex-col gap-2" style="animation-delay: 0.2s">
+          <h2 class="font-headline-xl text-headline-xl text-text-primary">Welcome back</h2>
+          <p class="font-body-md text-text-secondary">Sign in to continue to your workspace</p>
+        </div>
+        <!-- Form Section -->
+        <div id="view-login" class="w-full" style="display:flex;flex-direction:column;gap:1.5rem;">
+          <!-- Google Button -->
+          <button id="google-btn"
+            class="flex items-center justify-center gap-3 w-full py-3 px-4 rounded-lg border border-border-subtle bg-transparent hover:bg-white/5 transition-all group"
+            style="animation-delay: 0.3s">
+            <svg class="w-5 h-5" viewbox="0 0 24 24">
+              <path
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                fill="#4285F4"></path>
+              <path
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                fill="#34A853"></path>
+              <path
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                fill="#FBBC05"></path>
+              <path
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                fill="#EA4335"></path>
+            </svg>
+            <span class="font-body-md text-text-primary">Continue with Google</span>
+          </button>
+          <!-- Divider -->
+          <div class="flex items-center gap-4" style="animation-delay: 0.35s">
+            <div class="h-px flex-grow bg-border-subtle"></div>
+            <span class="font-label-mono text-[10px] text-text-secondary uppercase tracking-widest">or email</span>
+            <div class="h-px flex-grow bg-border-subtle"></div>
+          </div>
+          <!-- Inputs -->
+          <form class="flex flex-col gap-4">
+            <div class="flex flex-col gap-2" style="animation-delay: 0.4s">
+              <label class="font-label-mono text-label-mono text-text-secondary uppercase" for="email">Work
+                Email</label>
+              <div class="relative group">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary group-focus-within:text-primary transition-colors text-xl">alternate_email</span>
+                <input
+                  class="w-full bg-[#09090b] border border-border-subtle rounded-lg py-3 pl-10 pr-4 text-text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black transition-all outline-none placeholder:text-text-secondary/50"
+                  id="email" placeholder="name@company.com" type="email" />
+              </div>
+            </div>
+            <div class="flex flex-col gap-2" style="animation-delay: 0.5s">
+              <label class="font-label-mono text-label-mono text-text-secondary uppercase"
+                for="password">Password</label>
+              <div class="relative group">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary group-focus-within:text-primary transition-colors text-xl">lock</span>
+                <input
+                  class="w-full bg-[#09090b] border border-border-subtle rounded-lg py-3 pl-10 pr-12 text-text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black transition-all outline-none placeholder:text-text-secondary/50"
+                  id="password" placeholder="••••••••" type="password" />
+                <button
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
+                  onclick="togglePassword()" type="button">
+                  <span class="material-symbols-outlined text-xl" id="pw-icon">visibility_off</span>
+                </button>
+              </div>
+            </div>
+            <button
+              class="mt-4 w-full bg-[#3B82F6] hover:bg-[#2563EB] hover:brightness-110 hover:scale-[1.01] active:scale-[0.98] text-white py-3 rounded-lg font-body-md font-semibold flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-500/20"
+              style="animation-delay: 0.6s" type="submit">
+              Sign In
+              <span class="material-symbols-outlined text-xl">arrow_right_alt</span>
+            </button>
+          </form>
+          <div class="flex justify-center" style="animation-delay: 0.7s">
+            <button onclick="switchView('forgot')" type="button"
+              class="text-label-mono font-label-mono text-text-secondary hover:text-primary transition-colors uppercase tracking-wider underline-offset-4 hover:underline">Forgot
+              password?</button>
+          </div>
+        </div>
+
+        <!-- VIEW 2 — Forgot Password Form -->
+        <div id="view-forgot" style="display:none;flex-direction:column;gap:1.5rem;" class="w-full">
+          <!-- Back button -->
+          <button onclick="switchView('login')" type="button" style="display:flex;align-items:center;gap:6px;
+      color:#a1a1aa;font-size:13px;background:none;
+      border:none;cursor:pointer;padding:0;width:fit-content;" class="hover:text-primary transition-colors">
+            <span class="material-symbols-outlined" style="font-size:18px;">arrow_back</span>
+            Back to login
+          </button>
+
+          <!-- Heading -->
+          <div>
+            <h2 style="color:#f4f4f5;font-size:24px;
+      font-weight:600;margin-bottom:6px;">
+              Reset your password
+            </h2>
+            <p style="color:#a1a1aa;font-size:14px;">
+              Enter your email and we'll send you a reset link.
+            </p>
+          </div>
+
+          <!-- Email input -->
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label style="font-family:'JetBrains Mono';font-size:12px;
+      letter-spacing:0.05em;color:#a1a1aa;text-transform:uppercase;">
+              Work Email
+            </label>
+            <div style="position:relative;">
+              <span class="material-symbols-outlined" style="position:absolute;left:12px;top:50%;
+          transform:translateY(-50%);color:#a1a1aa;font-size:20px;">
+                alternate_email
+              </span>
+              <input id="reset-email" type="email" placeholder="name@company.com" style="width:100%;background:#09090b;
+          border:1px solid rgba(255,255,255,0.08);
+          border-radius:8px;padding:12px 16px 12px 40px;
+          color:#f4f4f5;font-size:14px;outline:none;
+          box-sizing:border-box;" class="focus:ring-2 focus:ring-primary focus:border-transparent transition-all" />
+            </div>
+          </div>
+
+          <!-- Error message -->
+          <p id="reset-error" style="display:none;color:#ef4444;
+      font-size:13px;text-align:center;"></p>
+
+          <!-- Send Reset Link button -->
+          <button id="reset-btn" onclick="handlePasswordReset()" type="button" style="width:100%;background:#3B82F6;
+      color:white;padding:12px;border-radius:8px;
+      font-size:14px;font-weight:600;border:none;
+      cursor:pointer;display:flex;align-items:center;
+      justify-content:center;gap:8px;"
+            class="hover:bg-[#2563EB] transition-colors shadow-lg shadow-blue-500/20 active:scale-[0.98]">
+            Send Reset Link
+            <span class="material-symbols-outlined" style="font-size:20px;">arrow_right_alt</span>
+          </button>
+        </div>
+
+        <!-- VIEW 3 — Email Sent Confirmation -->
+        <div id="view-sent" style="display:none;flex-direction:column;
+    gap:1.5rem;text-align:center;align-items:center;" class="w-full">
+          <!-- Success icon -->
+          <div style="width:64px;height:64px;background:rgba(34,197,94,0.1);
+    border-radius:50%;display:flex;align-items:center;
+    justify-content:center;border:1px solid rgba(34,197,94,0.2);">
+            <span class="material-symbols-outlined" style="color:#22c55e;font-size:32px;">mark_email_read</span>
+          </div>
+
+          <!-- Message -->
+          <div>
+            <h2 style="color:#f4f4f5;font-size:22px;
+      font-weight:600;margin-bottom:8px;">
+              Check your inbox!
+            </h2>
+            <p style="color:#a1a1aa;font-size:14px;line-height:1.6;">
+              We sent a password reset link to<br />
+              <span id="sent-email-display" style="color:#f4f4f5;font-weight:500;"></span>
+            </p>
+          </div>
+
+          <!-- Resend -->
+          <p style="color:#a1a1aa;font-size:13px;">
+            Didn't receive it?
+            <button onclick="handlePasswordReset()" type="button" style="color:#3B82F6;background:none;border:none;
+        cursor:pointer;font-size:13px;text-decoration:underline;" class="hover:text-blue-400">
+              Resend email
+            </button>
+          </p>
+          <p style="color:#6b7280;font-size:12px;margin-top:6px;">
+            📁 Also check your <strong style="color:#a1a1aa;">Spam</strong>
+            or <strong style="color:#a1a1aa;">Junk</strong> folder
+            if you don't see it in your inbox.
+          </p>
+
+          <!-- Back to login -->
+          <button onclick="switchView('login')" type="button" style="width:100%;background:transparent;
+      color:#a1a1aa;padding:12px;border-radius:8px;
+      font-size:14px;border:1px solid rgba(255,255,255,0.08);
+      cursor:pointer;" class="hover:bg-white/5 transition-colors">
+            ← Back to Login
+          </button>
+        </div>
+        <!-- Footer Links -->
+        <footer
+          class="mt-auto pt-12 flex flex-wrap justify-center gap-x-4 gap-y-2 text-label-mono font-label-mono text-text-secondary/60"
+          style="animation-delay: 0.8s">
+          <a class="hover:text-text-secondary transition-colors" href="#">Privacy Policy</a>
+          <span>·</span>
+          <a class="hover:text-text-secondary transition-colors" href="#">Terms of Service</a>
+          <span>·</span>
+          <a class="hover:text-text-secondary transition-colors" href="#">Help Center</a>
+        </footer>
+      </div>
+    </section>
+  </main>
+  <script>
+    // Password toggle visibility logic
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('pw-icon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility';
+      } else {
+        input.type = 'password';
+        icon.textContent = 'visibility_off';
+      }
+    }
+
+    // Particle background logic
+    const container = document.getElementById('particle-container');
+    const particleCount = 60;
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function createParticle() {
+      if (isReducedMotion) return;
+
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+
+      const size = Math.random() * 2 + 1;
+      const startX = Math.random() * 100;
+      const duration = Math.random() * 8 + 12;
+      const delay = Math.random() * -20; // Random negative delay for instant start
+      const opacity = Math.random() * 0.3 + 0.1;
+
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${startX}%`;
+      particle.style.bottom = `-5%`;
+      particle.style.opacity = opacity;
+
+      // Custom random floating animation using CSS
+      particle.style.animation = `float-particle ${duration}s linear ${delay}s infinite`;
+
+      container.appendChild(particle);
+
+      // Periodic cleanup if needed, though 'infinite' handles it
+    }
+
+    if (!isReducedMotion) {
+      for (let i = 0; i < particleCount; i++) {
+        createParticle();
+      }
+    }
+
+    // Handle Resize
+    window.addEventListener('resize', () => {
+      // Simple re-init if screen changes significantly
+      if (window.innerWidth < 768) {
+        container.innerHTML = '';
+      } else if (container.childNodes.length === 0 && !isReducedMotion) {
+        for (let i = 0; i < particleCount; i++) {
+          createParticle();
+        }
+      }
+    });
+
+  </script>
+</body>
+
+</html>
